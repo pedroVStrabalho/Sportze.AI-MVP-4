@@ -12,8 +12,10 @@ try:
     import cv2
     import mediapipe as mp
     CV_AVAILABLE = True
-except Exception:
+    CV_IMPORT_ERROR = None
+except Exception as e:
     CV_AVAILABLE = False
+    CV_IMPORT_ERROR = str(e)
 
 
 # ----------------------------
@@ -829,6 +831,8 @@ def calculate_angle(a, b, c):
 
 def analyze_squat_video(video_file) -> dict:
     if not CV_AVAILABLE:
+    st.error("MediaPipe/OpenCV import failed.")
+    st.code(CV_IMPORT_ERROR if CV_IMPORT_ERROR else "Unknown import error")
         return {
             "status": "error",
             "message": "MediaPipe/OpenCV are not installed yet."
